@@ -55,12 +55,28 @@ body {
   position: relative;
 }
 
-img.icon {
+img.icon-1 {
+  position: absolute;
+  height: 110px;
+  width: 145px;
+  top: -40px;
+  left: 105px;
+}
+
+img.icon-2 {
   position: absolute;
   height: 85px;
   width: 65px;
   top: 122px;
   left: 150px;
+}
+
+img.icon-3 {
+  position: absolute;
+  height: 90px;
+  width: 65px;
+  top: 10px;
+  left: -15px;
 }
 
 .text-link,
