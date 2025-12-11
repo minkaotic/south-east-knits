@@ -23,6 +23,11 @@ body {
   margin-top: 30px;
 }
 
+.title-logo {
+  max-height: 220px;
+  max-width: 420px;
+}
+
 .section-headline {
   color: darkslategrey;
   text-shadow: 5px 3px 3px cadetblue;
