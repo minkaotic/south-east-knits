@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FFF7E8"><title>Stitch Calculator</title>
+<style>
+:root{--pink:#F0A9C0;--green:#A9D878;--green-dark:#365A27;--cream:#FFF7E8;--purple:#7138B5;--orange:#F3A05C;--ink:#382D37;--muted:#7C6D79;--line:#E8DDE0}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);background:radial-gradient(ellipse at 4% 20%,#f0a9c033,transparent 23rem),radial-gradient(ellipse at 95% 78%,#a9d87830,transparent 25rem),var(--cream);font-family:ui-rounded,"Avenir Next",Avenir,"Trebuchet MS",system-ui,sans-serif;line-height:1.45}
+.page{width:min(100% - 28px,780px);margin:auto;padding:30px 0 36px}header{display:flex;align-items:center;gap:12px;margin-bottom:25px}.logo{width:42px;height:42px;display:grid;place-items:center;border-radius:15px;background:var(--purple);color:white;transform:rotate(-5deg)}.logo svg{width:25px}.wordmark{font-weight:900;letter-spacing:-.045em;font-size:1.08rem}.tagline{color:var(--muted);font-size:.78rem}
+.intro{position:relative;padding:9px 112px 24px 2px;min-height:145px}h1{margin:0;font-size:clamp(2.3rem,7vw,3.5rem);letter-spacing:-.07em;line-height:.98}.intro p{margin:12px 0 0;color:#695766;font-size:.94rem}.doodle{position:absolute;width:104px;height:120px;right:0;top:0;overflow:visible}
+.calculator{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}.panel{border-radius:23px;padding:22px;border:1px solid #e8dde0e6;background:#ffffffd6;box-shadow:0 12px 32px #4d304212}.panel.results{background:#EAF3E0;border-color:#D6E7C4;box-shadow:none}h2{margin:0 0 17px;font-size:1.12rem;letter-spacing:-.035em}
+.field{margin-top:15px}.label-line{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:6px}label{font-weight:800;font-size:.87rem}.hint{color:var(--muted);font-size:.72rem}.input-wrap{display:flex;align-items:center;border:1.5px solid var(--line);background:#FFFCF8;border-radius:13px}.input-wrap:focus-within{border-color:var(--purple);box-shadow:0 0 0 3px #7138b51c}input{width:100%;min-width:0;border:0;outline:0;background:transparent;padding:12px 13px;color:var(--ink);font:inherit;font-size:1rem;font-weight:750}.unit{color:var(--muted);padding:0 12px 0 2px;font-size:.8rem}.two-fields{display:grid;grid-template-columns:1fr 1fr;gap:11px}.small-note{font-size:.77rem;color:var(--muted);margin:14px 0 0}
+.result{padding:14px 0;border-bottom:1px solid #536f412b}.result:first-of-type{padding-top:0}.result:last-of-type{border-bottom:0;padding-bottom:0}.result-label{font-size:.81rem;font-weight:800;color:#52664A}.result-value{margin-top:3px;font-size:clamp(1.8rem,5vw,2.4rem);line-height:1.1;letter-spacing:-.055em;font-weight:950;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.result-value span{font-size:.82rem;letter-spacing:0;font-weight:700}.exact .result-value{color:var(--purple)}.result-detail{color:#5E7055;font-size:.76rem;margin-top:5px}.error{min-height:1.1em;margin:9px 0 0;font-size:.78rem;font-weight:700;color:#A22D4C}.bottom-cat{width:82px;height:64px;margin:22px auto 0;display:block}footer{margin-top:24px;text-align:center;color:var(--muted);font-size:.75rem}
+@media(max-width:620px){.page{width:min(100% - 20px,440px);padding-top:18px}header{margin-bottom:20px}.intro{min-height:128px;padding-right:93px;padding-bottom:20px}.doodle{width:86px;height:104px}.calculator{grid-template-columns:1fr;gap:13px}.panel{padding:19px;border-radius:20px}.panel.results{order:2}.bottom-cat{margin-top:16px}}
+@media(max-width:360px){.two-fields{grid-template-columns:1fr;gap:0}.intro{padding-right:75px}.doodle{width:70px}}
+</style></head>
+<body><div class="page">
+<section class="intro"><h1>Stitch calculator</h1><p>From swatch to stitch count, in a few seconds.</p>
+<!-- Hand-drawn cat with yarn -->
+<svg class="doodle" viewBox="0 0 112 130" role="img" aria-label="Hand-drawn cat sitting beside a ball of yarn"><g stroke="#493947" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M23 47Q18 35 20 19Q20 15 24 19L39 31Q52 25 65 31L81 19Q85 16 85 21L84 48Q91 60 87 78Q82 98 56 98Q30 98 24 79Q20 61 23 47Z" fill="#FFF7E8"/><path d="M28 29 39 38 27 48M77 29 65 38 79 48" fill="#F0A9C0" stroke-width="1.8"/><path d="M35 56Q39 52 44 56M64 56Q69 52 73 56"/><path d="M51 65Q56 69 61 65Q57 75 51 65Z" fill="#F3A05C" stroke-width="1.7"/><path d="M56 74v4m0 0-5 3m5-3 5 3M33 66 18 63M34 72 18 73M77 66 92 63M77 72 92 73"/><path d="M27 84Q18 93 26 103Q34 109 43 99" fill="#FFF7E8"/><path d="M72 93Q84 101 91 91Q97 83 91 79"/><path d="M34 97Q30 112 43 115M69 97Q74 112 62 115M39 114Q56 120 70 114"/></g><g transform="translate(83 105) rotate(-13)"><circle r="16" fill="#7138B5" stroke="#493947" stroke-width="2.3"/><path d="M-10 -7Q-2 -15 7 -6T9 7M-12 5Q-2 15 10 3M-3 -14Q5 -3-4 13" fill="none" stroke="#D9C5F2" stroke-width="2.1" stroke-linecap="round"/></g><path d="M7 43l-3-4m7-2 1-5M94 44l4-4m3 8 5-1M11 92q-5 3-2 8m90-22 4 2" stroke="#F3A05C" stroke-width="2.6" stroke-linecap="round"/></svg>
+</section>
+<main class="calculator">
+<section class="panel" aria-labelledby="measurements-heading"><h2 id="measurements-heading">Your measurements</h2>
+<div class="two-fields"><div class="field"><div class="label-line"><label for="swatchStitches">Swatch stitches</label></div><div class="input-wrap"><input id="swatchStitches" type="number" min="0.000001" step="any" inputmode="decimal" aria-describedby="error"><span class="unit">st</span></div></div>
+<div class="field"><div class="label-line"><label for="swatchCm">Swatch width</label></div><div class="input-wrap"><input id="swatchCm" type="number" min="0.000001" step="any" inputmode="decimal" aria-describedby="error"><span class="unit">cm</span></div></div></div>
+<div class="field"><div class="label-line"><label for="desiredCm">Desired width</label></div><div class="input-wrap"><input id="desiredCm" type="number" min="0.000001" step="any" inputmode="decimal" aria-describedby="error"><span class="unit">cm</span></div></div>
+<div class="field"><div class="label-line"><label for="multiple">Stitch multiple <span style="color:var(--muted);font-weight:600">(optional)</span></label><span class="hint">If needed for pattern repeat</span></div><div class="input-wrap"><input id="multiple" type="number" min="1" step="1" inputmode="numeric" aria-describedby="error"><span class="unit">st</span></div></div>
+<p class="small-note">Results update as you type.</p><p class="error" id="error" role="alert" aria-live="polite"></p>
+</section>
+<section class="panel results" aria-labelledby="results-heading"><h2 id="results-heading">Your results</h2>
+<div class="result exact"><div class="result-label">Exact stitch count</div><div class="result-value" id="exactResult">— <span>stitches</span></div></div>
+<div class="result"><div class="result-label">Nearest whole stitch</div><div class="result-value" id="wholeResult">— <span>stitches</span></div></div>
+<div class="result" id="multipleBox" hidden>
+  <div class="result-label">
+    Nearest multiple of <span id="multipleLabel">—</span>
+  </div>
+  <div class="result-value" id="multipleResult">— <span>stitches</span></div>
+  <div class="result-detail" id="multipleDetail"></div>
+
+  <div class="result-label alternative-label" id="alternativeLabel" hidden>
+  </br>
+    Alternatively: <span id="alternativeStitches">—</span> stitches
+  </div>
+  <div class="result-detail" id="alternativeDetail" hidden></div>
+</div>
+<svg class="bottom-cat" viewBox="0 0 100 70" role="img" aria-label="A tiny hand-drawn cat peeking over a line"><g fill="#FFF7E8" stroke="#493947" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"><path d="M26 54Q20 44 24 28L27 9Q28 5 32 9L44 20Q51 17 58 20L70 9Q74 6 75 11L78 30Q83 45 75 54Z"/><path d="M31 18 42 27 29 33M70 18 59 27 73 33" fill="#F0A9C0" stroke-width="1.6"/><path d="M35 38q4-4 8 0m13 0q4-4 8 0" fill="none"/><path d="M47 44q4 4 8 0l-4 6Z" fill="#F3A05C" stroke-width="1.5"/><path d="M51 50v3m0 0-4 2m4-2 4 2M37 46l-10-2m10 6-11 2m37-6 10-2m-10 6 11 2" fill="none" stroke-width="1.5"/><path d="M18 57h64" fill="none" stroke="#A9D878" stroke-width="4"/></g><path d="M13 23l-4-4m8-2 1-5m68 10 4-4m3 7 5-1" fill="none" stroke="#7138B5" stroke-width="2.5" stroke-linecap="round"/></svg>
+</section></main></div>
+<script>
+(()=>{const $=id=>document.getElementById(id);const stitchInput=$("swatchStitches"),swatchCmInput=$("swatchCm"),desiredInput=$("desiredCm"),multipleInput=$("multiple"),error=$("error");
+const format=n=>Number.isFinite(n)?new Intl.NumberFormat(undefined,{maximumFractionDigits:2}).format(n):"—";const word=n=>n===1?"stitch":"stitches";
+const show=(id,n)=>{$(id).innerHTML=`${format(n)} <span>${word(n)}</span>`};
+
+function clear() {
+  $("exactResult").innerHTML = '— <span>stitches</span>';
+  $("wholeResult").innerHTML = '— <span>stitches</span>';
+  $("multipleBox").hidden = true;
+  $("multipleDetail").textContent = "";
+  $("alternativeLabel").hidden = true;
+  $("alternativeDetail").hidden = true;
+};
+
+function update() {
+  error.textContent = "";
+
+  if ([stitchInput, swatchCmInput, desiredInput]
+      .some(x => x.value.trim() === "")) {
+    clear();
+    return;
+  }
+
+  const s = Number(stitchInput.value);
+  const cm = Number(swatchCmInput.value);
+  const w = Number(desiredInput.value);
+
+  if (![s, cm, w].every(Number.isFinite) || s <= 0 || cm <= 0 || w <= 0) {
+    error.textContent = "Enter measurements greater than zero.";
+    clear();
+    return;
+  }
+
+  const exact = s / cm * w;
+
+  if (!Number.isFinite(exact)) {
+    error.textContent = "Those measurements are too large to calculate.";
+    clear();
+    return;
+  }
+
+  show("exactResult", exact);
+  show("wholeResult", Math.round(exact));
+
+  const mt = multipleInput.value.trim();
+
+  if (mt === "") {
+    $("multipleBox").hidden = true;
+    return;
+  }
+
+  const m = Number(mt);
+
+  if (!Number.isInteger(m) || m < 1 || !Number.isFinite(m)) {
+    $("multipleBox").hidden = true;
+    error.textContent =
+      "The optional stitch multiple must be a whole number of 1 or more.";
+    return;
+  }
+
+  const lo = Math.floor(exact / m) * m;
+  const hi = Math.ceil(exact / m) * m;
+
+  // Keep the current selection behaviour for the nearest multiple.
+  const result = exact - lo < hi - exact ? lo : hi;
+
+  // The alternative is the other adjacent multiple.
+  const alternative = result === lo ? hi : lo;
+
+  $("multipleBox").hidden = false;
+  $("multipleLabel").textContent = format(m);
+  show("multipleResult", result);
+
+  const actualWidth = result * cm / s;
+  const diff = actualWidth - w;
+
+  $("multipleDetail").textContent =
+    Math.abs(diff) < 0.005
+      ? "Matches your desired width."
+      : `${format(actualWidth)} cm wide (${format(Math.abs(diff))} cm ${diff > 0 ? "over" : "under"})`;
+
+  // Display the alternative stitch count and its width.
+  $("alternativeLabel").hidden = false;
+  $("alternativeStitches").textContent = format(alternative);
+
+  const alternativeWidth = alternative * cm / s;
+  const alternativeDiff = alternativeWidth - w;
+
+  $("alternativeDetail").hidden = false;
+  $("alternativeDetail").textContent =
+    Math.abs(alternativeDiff) < 0.005
+      ? "Matches your desired width."
+      : `${format(alternativeWidth)} cm wide (${format(Math.abs(alternativeDiff))} cm ${alternativeDiff > 0 ? "over" : "under"})`;
+};
+
+[stitchInput,swatchCmInput,desiredInput,multipleInput].forEach(el=>el.addEventListener("input",update));
+})();
+</script></body></html>
